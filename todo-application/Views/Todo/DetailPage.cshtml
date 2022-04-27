@@ -1,0 +1,115 @@
+﻿@model Todo
+
+<script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<style>
+    body {
+        font-family: 'Ubuntu', sans-serif;
+    }
+
+    .duedate {
+        border: 2px solid;
+        border-color: red;
+        background-color: #fa6e4b;
+        display: inline;
+        padding: 3px;
+    }
+
+    .card {
+        border-color: #212529;
+        border: 2px solid;
+    }
+    .card-header{
+        background-color: #212529;
+
+    }
+
+    a > i:hover {
+        color: white;
+    }
+
+    .descriptionHeader,.description{
+        border-bottom: 1px solid;
+        border-color: silver;
+        padding-bottom: 10px;
+    }
+</style>
+
+<div class="container">
+    <div class="card">
+
+        <div class="card-header d-flex justify-content-between">
+            <h5 style="color: white;">@Model.Title</h5>
+            <div class="">
+                <a asp-controller="Todo" asp-action="Index" class="btn btn-primary backButton">
+                    <i class="bi bi-arrow-left-circle"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <h5 class="descriptionHeader">Description</h5>
+            <p class="description">@Model.Description</p>
+            <p>
+                Status -
+                @if (Model.Status == 0)
+                {
+                    <i class="bi bi-flag">Not started</i>
+                }
+                else if (Model.Status == 1)
+                {
+                    <i class="bi bi-flag-fill">In Process</i>
+                }
+                else
+                {
+                    <i class="bi bi-flag-fill">Finished</i>
+                }
+            </p>
+        </div>
+
+        <div class="card-footer d-flex justify-content-between">
+            <p class="duedate">@Model.DueDate</p>
+            <p>
+                <a class="btn btn-info doingButton" data-id="@Model.Id" data-status="@Model.Status">
+                    @if (Model.Status == 0)
+                    {
+                        <i class="bi bi-flag-fill">Mark as doing</i>
+                    }
+                    else
+                    {
+                        <i class="bi bi-flag">Mark as todo</i>
+                    }
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $(".doingButton").on('click', function() {
+             var itemId = $(this).data("id");
+             var checkStatus = $(this).data("status");
+
+             if(checkStatus == 0){
+                var d = {id: itemId, status: 1};
+             }else{
+                var d = {id: itemId, status: 0};
+             }
+
+             $.ajax({
+                 type: 'POST',
+                 url: '@Url.Action("ChangeTodoStatus", "Todo")',
+                 data: d,
+                 success: function(data){
+                     if(data.success == "Success"){
+                        location.reload();
+                     }
+                     else{
+                         alert("something went wrong");
+                     }
+                 }
+             });
+        });
+    });
+</script>

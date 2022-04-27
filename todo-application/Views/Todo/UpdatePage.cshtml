@@ -1,0 +1,100 @@
+﻿@model Todo
+
+<style>
+    .add {
+        display: float;
+        text-align: center;
+        margin-top: 5px;
+    }
+
+    body {
+        font-family: 'Ubuntu', sans-serif;
+    }
+
+    .backButton:hover {
+        background-color: silver;
+        color: white;
+    }
+
+    .card {
+        width: 22rem;
+        border-color: #212529;
+        border: 2px solid;
+    }
+
+    .card-header {
+        background-color: #212529;
+    }
+
+    h5 {
+        color: white;
+    }
+
+    #descriptionCharNum, #titleCharNum{
+        color: #8f8d88;
+        text-align: end;
+    }
+</style>
+
+<div class="d-flex justify-content-center">
+
+    <form asp-action="UpdateTodo" asp-controller="Todo" method="post">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="card">
+
+            <div class="card-header d-flex justify-content-between">
+                <h5>Update todo</h5>
+                <div class="">
+                    <a asp-controller="Todo" asp-action="Index" class="btn btn-primary">
+                        <i class="bi bi-arrow-left-circle"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="card-body">
+
+                <div class="add">
+                    <label asp-for="Title" class="" for="Title">Title</label>
+                    <input asp-for="Title" class="form-control"
+                           type="text" name="Title" id="Title" placeholder="Title"
+                           onkeyup="countTitleChars(this)" />
+                    <p id="titleCharNum">80 characters</p>
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <div class="add">
+                    <label asp-for="Description" class="" for="Title">Description</label>
+                    <textarea asp-for="Description" class="form-control" type="text"
+                              name="Description" id="Description" placeholder="Description"
+                              onkeyup="countDescriptionChars(this)"></textarea>
+                    <p id="descriptionCharNum">320 characters</p>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="add">
+                    <label asp-for="DueDate" class="" for="Title">DueDate</label>
+                    <input asp-for="DueDate" class="form-control" type="datetime-local" name="DueDate" id="DueDate" placeholder="DueDate" />
+                    <span asp-validation-for="DueDate" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <div class="card-footer d-flex justify-content-end">
+                <button type="submit" class="btn btn-info">Update</button>
+            </div>
+
+        </div>
+
+    </form>
+</div>
+
+<script>
+    function countTitleChars(obj){
+        document.getElementById('titleCharNum').innerHTML = 80 - obj.value.length + ' characters';
+    }
+
+    function countDescriptionChars(obj){
+        document.getElementById('descriptionCharNum').innerHTML = 320 - obj.value.length + ' characters';
+    }
+</script>
