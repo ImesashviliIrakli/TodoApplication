@@ -84,7 +84,7 @@ namespace todo_application.Controllers
 
             if (!finish)
             {
-                return Json(new { success = "Something went wrong" });
+                return NotFound("Error");
             }
 
             return Json(new { success = "Success" });
