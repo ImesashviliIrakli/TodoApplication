@@ -42,6 +42,12 @@ namespace todo_application.Controllers
         public IActionResult DetailPage(int id)
         {
             Todo details = _context.Todos.Where(x => x.Id == id).FirstOrDefault();
+
+            if(details == null)
+            {
+                return View("Error");
+            }
+
             return View(details);
         }
 
@@ -91,7 +97,7 @@ namespace todo_application.Controllers
 
             if (!setDoing)
             {
-                return Json(new { success = "Something went wrong" });
+                return NotFound("Error");
             }
 
             return Json(new { success = "Success" });
@@ -104,7 +110,7 @@ namespace todo_application.Controllers
 
             if (!delete)
             {
-                return Json(new { errorMessage = "Something went wrong" });
+                return NotFound("Error");
             }
 
             return Json(new { success = "Success" });
@@ -125,7 +131,7 @@ namespace todo_application.Controllers
 
             if (!finish)
             {
-                return Json(new { success = "Something went wrong" });
+                return NotFound("Error");
             }
 
             return Json(new { success = "Success" });
