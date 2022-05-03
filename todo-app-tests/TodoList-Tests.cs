@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using todo_application.Models;
 using todo_application.Repository;
+using todo_domain_entities;
 
 namespace todo_app_tests
 {
@@ -35,7 +36,7 @@ namespace todo_app_tests
 
             repository = new TodoListRepository(context, logger);
 
-            Todo body = new Todo
+            TodoList body = new TodoList
             {
                 Title = title,
                 Description = description,
@@ -68,7 +69,7 @@ namespace todo_app_tests
 
             repository = new TodoListRepository(context, logger);
 
-            Todo body = null;
+            TodoList body = null;
 
             try
             {
@@ -99,7 +100,7 @@ namespace todo_app_tests
 
             repository = new TodoListRepository(context, logger);
 
-            Todo body = new Todo
+            TodoList body = new TodoList
             {
                 Id = repository.GetByTitle(oldTitle),
                 Title = newTitle,
@@ -133,7 +134,7 @@ namespace todo_app_tests
 
             repository = new TodoListRepository(context, logger);
 
-            Todo body = null;
+            TodoList body = null;
 
             try
             {

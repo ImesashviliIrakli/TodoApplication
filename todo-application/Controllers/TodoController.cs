@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using todo_application.Models;
 using todo_application.Repository;
+using todo_domain_entities;
 
 namespace todo_application.Controllers
 {
@@ -10,16 +12,18 @@ namespace todo_application.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly TodoListRepository _repository;
-        public TodoController(ApplicationDbContext context, TodoListRepository repository)
+        private readonly IMapper _mapper;
+        public TodoController(ApplicationDbContext context, TodoListRepository repository, IMapper mapper)
         {
             _context = context;
             _repository = repository;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
         {
-            var model = _context.Todos.Where(x => x.Status != 2).ToList();
-            return View(model);
+            List<TodoList> model = _context.Todos.Where(x => x.Status != 2).ToList();
+            return View(_mapper.Map<List<Todo>>(model));
         }
 
         public IActionResult AddPage()
@@ -30,36 +34,38 @@ namespace todo_application.Controllers
         [HttpGet("{id:int}")]
         public IActionResult UpdatePage(int id)
         {
-            Todo model = _context.Todos.Where(x => x.Id == id).FirstOrDefault();
+            TodoList model = _context.Todos.Where(x => x.Id == id).FirstOrDefault();
             if(model == null)
             {
                 return View("Error");
             }
-            return View(model);
+            return View(_mapper.Map<Todo>(model));
         }
 
         [HttpGet("details/{id}")]
         public IActionResult DetailPage(int id)
         {
-            Todo details = _context.Todos.Where(x => x.Id == id).FirstOrDefault();
+            TodoList details = _context.Todos.Where(x => x.Id == id).FirstOrDefault();
 
             if(details == null)
             {
                 return View("Error");
             }
 
-            return View(details);
+            return View(_mapper.Map<Todo>(details));
         }
 
         [HttpPost]
         public IActionResult AddTodo(Todo body)
         {
+            TodoList todoEntity = _mapper.Map<TodoList>(body);
+
             if (!ModelState.IsValid)
             {
                 return View("AddPage");
             }
 
-            _repository.AddTodo(body);
+            _repository.AddTodo(todoEntity);
 
             return RedirectToAction("Index");
         }
@@ -67,12 +73,14 @@ namespace todo_application.Controllers
         [HttpPost]
         public IActionResult UpdateTodo(Todo body)
         {
+            TodoList todoEntity = _mapper.Map<TodoList>(body);
+
             if (!ModelState.IsValid)
             {
                 return View("UpdatePage", body);
             }
 
-             _repository.UpdateTodo(body);
+             _repository.UpdateTodo(todoEntity);
 
             return RedirectToAction("Index");
         }
@@ -119,9 +127,9 @@ namespace todo_application.Controllers
         [HttpGet]
         public IActionResult FinishedTodos()
         {
-            var model = _context.Todos.Where(x => x.Status == 2).ToList();
+            List<TodoList> model = _context.Todos.Where(x => x.Status == 2).ToList();
 
-            return View(model);
+            return View(_mapper.Map<List<Todo>>(model));
         }
 
         [HttpPost]

@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using todo_application.Models;
+using todo_domain_entities;
 
 namespace todo_application.Repository
 {
@@ -32,7 +33,7 @@ namespace todo_application.Repository
             return todo.Id;
         }
 
-        public void AddTodo(Todo body)
+        public void AddTodo(TodoList body)
         { 
             string methodName = nameof(AddTodo);
 
@@ -64,7 +65,7 @@ namespace todo_application.Repository
 
             try
             {
-                Todo todo = _context.Todos.Where(x => x.Id == id).FirstOrDefault();
+                TodoList todo = _context.Todos.Where(x => x.Id == id).FirstOrDefault();
 
                 if (todo != null)
                 {
@@ -94,7 +95,7 @@ namespace todo_application.Repository
 
             try
             {
-                Todo todo = _context.Todos.Where(x => x.Id == id).FirstOrDefault();
+                TodoList todo = _context.Todos.Where(x => x.Id == id).FirstOrDefault();
 
                 if (todo != null)
                 {
@@ -113,7 +114,7 @@ namespace todo_application.Repository
             }
         }
 
-        public Todo GetTask(int id)
+        public TodoList GetTask(int id)
         {
             if (id == 0)
             {
@@ -122,7 +123,7 @@ namespace todo_application.Repository
 
             try
             {
-                Todo todo = _context.Todos.Where(x => x.Id == id).FirstOrDefault();
+                TodoList todo = _context.Todos.Where(x => x.Id == id).FirstOrDefault();
                 return todo;
             }
             catch (Exception ex)
@@ -131,7 +132,7 @@ namespace todo_application.Repository
             }
         }
 
-        public void UpdateTodo(Todo body)
+        public void UpdateTodo(TodoList body)
         {
             string methodName = nameof(UpdateTodo);
 
@@ -142,7 +143,7 @@ namespace todo_application.Repository
 
             try
             {
-                Todo todo = _context.Todos.Where(x => x.Id == body.Id).FirstOrDefault();
+                TodoList todo = _context.Todos.Where(x => x.Id == body.Id).FirstOrDefault();
                 
                 if (todo != null)
                 {

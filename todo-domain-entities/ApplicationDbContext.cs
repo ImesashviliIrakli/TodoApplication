@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using todo_domain_entities;
+
 namespace todo_application.Models
 {
     public class ApplicationDbContext : DbContext
@@ -13,6 +15,6 @@ namespace todo_application.Models
 
         }
 
-        public DbSet<Todo> Todos { get; set; }
+        public DbSet<TodoList> Todos { get; set; }
     }
 }
